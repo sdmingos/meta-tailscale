@@ -18,8 +18,7 @@ SRC_URI = "https://pkgs.tailscale.com/stable/tailscale_${PV}_${ARCH_DIR}.tgz;sub
 
 inherit systemd
 
-# These are needed to do the package splitting
-DEPENDS:append = " virtual/${HOST_PREFIX}gcc virtual/${HOST_PREFIX}compilerlibs virtual/libc"
+# Pre-built binaries — no compiler needed (INHIBIT_DEFAULT_DEPS = "1" is already set)
 # Runtime dependencies, iptables required.
 RDEPENDS:${PN} = "iptables"
 
@@ -37,7 +36,7 @@ SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE:${PN} = "tailscaled.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-S = "${WORKDIR}/${PN}-${PV}/${PN}_${PV}_${ARCH_DIR}"
+S = "${UNPACKDIR}/${PN}-${PV}/${PN}_${PV}_${ARCH_DIR}"
 
 do_install() {
   install -d ${D}/${bindir}
